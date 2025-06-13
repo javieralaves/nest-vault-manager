@@ -11,6 +11,7 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 interface LogEntry {
   timestamp: string;
@@ -60,63 +61,73 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen p-6 md:p-10 space-y-8 font-sans">
-      <h1 className="text-2xl font-semibold">Vault overview</h1>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Vault</TableHead>
-            <TableHead>APY</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Last price update</TableHead>
-            <TableHead>Last rebalance</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {data.map((v) => (
-            <VaultRow
-              key={v.id}
-              vault={v}
-              onAction={handleAction}
-              onUpdatePrice={updatePrice}
-              onRebalance={rebalance}
-              onUpdateComposition={updateComposition}
-            />
-          ))}
-        </TableBody>
-      </Table>
-
-      <div>
-        <h2 className="text-xl font-semibold mt-8 mb-4">Action log</h2>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Date</TableHead>
-              <TableHead>Vault</TableHead>
-              <TableHead>Action</TableHead>
-              <TableHead>User</TableHead>
-              <TableHead>Changes</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {logs.map((log, idx) => (
-              <TableRow key={idx}>
-                <TableCell>{formatTimestamp(log.timestamp)}</TableCell>
-                <TableCell>{log.vault}</TableCell>
-                <TableCell>{log.action}</TableCell>
-                <TableCell>{log.address}</TableCell>
-                <TableCell>{log.details}</TableCell>
-              </TableRow>
-            ))}
-            {logs.length === 0 && (
+      <Card>
+        <CardHeader>
+          <CardTitle>Vault overview</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
               <TableRow>
-                <TableCell colSpan={5} className="text-gray-500">
-                  No actions yet.
-                </TableCell>
+                <TableHead>Vault</TableHead>
+                <TableHead>APY</TableHead>
+                <TableHead>Price</TableHead>
+                <TableHead>Last price update</TableHead>
+                <TableHead>Last rebalance</TableHead>
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+            </TableHeader>
+            <TableBody>
+              {data.map((v) => (
+                <VaultRow
+                  key={v.id}
+                  vault={v}
+                  onAction={handleAction}
+                  onUpdatePrice={updatePrice}
+                  onRebalance={rebalance}
+                  onUpdateComposition={updateComposition}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Action log</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Date</TableHead>
+                <TableHead>Vault</TableHead>
+                <TableHead>Action</TableHead>
+                <TableHead>User</TableHead>
+                <TableHead>Changes</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {logs.map((log, idx) => (
+                <TableRow key={idx}>
+                  <TableCell>{formatTimestamp(log.timestamp)}</TableCell>
+                  <TableCell>{log.vault}</TableCell>
+                  <TableCell>{log.action}</TableCell>
+                  <TableCell>{log.address}</TableCell>
+                  <TableCell>{log.details}</TableCell>
+                </TableRow>
+              ))}
+              {logs.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-gray-500">
+                    No actions yet.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   );
 }
