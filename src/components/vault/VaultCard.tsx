@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Vault, Asset } from "./vaults";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 interface VaultCardProps {
   vault: Vault;
@@ -51,7 +53,7 @@ export function VaultCard({
 
   return (
     <Sheet>
-      <div className="border rounded-md p-4 flex justify-between items-center">
+      <Card className="flex items-center justify-between p-4">
         <div>
           <div className="font-semibold">{vault.name}</div>
           <div className="text-sm text-gray-500">APY: {vault.apy}%</div>
@@ -59,8 +61,8 @@ export function VaultCard({
         <SheetTrigger asChild>
           <Button variant="outline" size="sm">Manage</Button>
         </SheetTrigger>
-      </div>
-      <SheetContent className="flex flex-col gap-4" side="right">
+      </Card>
+      <SheetContent className="flex flex-col gap-4 p-6" side="right">
         <div className="font-semibold text-lg mb-2">{vault.name}</div>
         <div className="text-sm">APY: {vault.apy}%</div>
         <div className="text-sm">Price: {vault.price}</div>
@@ -69,18 +71,18 @@ export function VaultCard({
 
         {/* Composition Table */}
         <div className="mt-2">
-          <table className="text-sm w-full border">
+          <table className="w-full text-sm border rounded-2xl overflow-hidden">
             <thead>
               <tr>
-                <th className="text-left p-1 border-b">Asset</th>
-                <th className="text-left p-1 border-b">Allocation %</th>
+                <th className="border-b p-1 text-left">Asset</th>
+                <th className="border-b p-1 text-left">Allocation %</th>
               </tr>
             </thead>
             <tbody>
               {vault.composition.map((a, i) => (
                 <tr key={i}>
-                  <td className="p-1 border-b">{a.symbol}</td>
-                  <td className="p-1 border-b">{a.allocation}</td>
+                  <td className="border-b p-1">{a.symbol}</td>
+                  <td className="border-b p-1">{a.allocation}</td>
                 </tr>
               ))}
             </tbody>
@@ -92,8 +94,7 @@ export function VaultCard({
 
         {editingPrice ? (
           <div className="flex gap-2">
-            <input
-              className="border rounded p-1 flex-1"
+            <Input
               type="number"
               value={priceValue}
               onChange={(e) => setPriceValue(e.target.value)}
@@ -111,14 +112,14 @@ export function VaultCard({
           <div className="space-y-2">
             {compRows.map((row, idx) => (
               <div key={idx} className="flex gap-2 items-center">
-                <input
-                  className="border rounded p-1 flex-1"
+                <Input
+                  className="flex-1"
                   placeholder="Asset"
                   value={row.symbol}
                   onChange={(e) => updateRow(idx, "symbol", e.target.value)}
                 />
-                <input
-                  className="border rounded p-1 w-20"
+                <Input
+                  className="w-20"
                   type="number"
                   value={row.allocation}
                   onChange={(e) => updateRow(idx, "allocation", e.target.value)}
