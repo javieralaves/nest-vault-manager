@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { Vault, Asset } from "./vaults";
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
+import {
+  VaultSheet,
+  VaultSheetContent,
+  VaultSheetTrigger,
+  VaultSheetClose,
+} from "@/components/vault/VaultSheet";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
@@ -78,8 +83,8 @@ export function VaultRow({
   };
 
   return (
-    <Sheet>
-      <SheetTrigger asChild>
+    <VaultSheet>
+      <VaultSheetTrigger asChild>
         <TableRow className="cursor-pointer">
           <TableCell className="font-medium">{vault.name}</TableCell>
           <TableCell>{vault.apy}%</TableCell>
@@ -87,8 +92,8 @@ export function VaultRow({
           <TableCell>{formatTimestamp(vault.lastPriceUpdate)}</TableCell>
           <TableCell>{formatTimestamp(vault.lastRebalance)}</TableCell>
         </TableRow>
-      </SheetTrigger>
-      <SheetContent className="flex flex-col gap-4 p-6" side="right">
+      </VaultSheetTrigger>
+      <VaultSheetContent className="flex flex-col gap-4 p-6" side="right">
         <div className="font-semibold text-lg mb-2">{vault.name}</div>
         <div className="text-sm">APY: {vault.apy}%</div>
         <div className="text-sm">Price: {vault.price}</div>
@@ -187,10 +192,10 @@ export function VaultRow({
         >
           Rebalance now
         </Button>
-        <SheetClose asChild>
+        <VaultSheetClose asChild>
           <Button variant="secondary">Close</Button>
-        </SheetClose>
-      </SheetContent>
-    </Sheet>
+        </VaultSheetClose>
+      </VaultSheetContent>
+    </VaultSheet>
   );
 }

@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { Vault, Asset } from "./vaults";
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
+import {
+  VaultSheet,
+  VaultSheetContent,
+  VaultSheetTrigger,
+  VaultSheetClose,
+} from "@/components/vault/VaultSheet";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -81,17 +86,17 @@ export function VaultCard({
   };
 
   return (
-    <Sheet>
+    <VaultSheet>
       <Card className="flex items-center justify-between p-4">
         <div>
           <div className="font-semibold">{vault.name}</div>
           <div className="text-sm text-gray-500">APY: {vault.apy}%</div>
         </div>
-        <SheetTrigger asChild>
+        <VaultSheetTrigger asChild>
           <Button variant="outline" size="sm">Manage</Button>
-        </SheetTrigger>
+        </VaultSheetTrigger>
       </Card>
-      <SheetContent className="flex flex-col gap-4 p-6" side="right">
+      <VaultSheetContent className="flex flex-col gap-4 p-6" side="right">
         <div className="font-semibold text-lg mb-2">{vault.name}</div>
         <div className="text-sm">APY: {vault.apy}%</div>
         <div className="text-sm">Price: {vault.price}</div>
@@ -197,10 +202,10 @@ export function VaultCard({
         >
           Rebalance now
         </Button>
-        <SheetClose asChild>
+        <VaultSheetClose asChild>
           <Button variant="secondary">Close</Button>
-        </SheetClose>
-      </SheetContent>
-    </Sheet>
+        </VaultSheetClose>
+      </VaultSheetContent>
+    </VaultSheet>
   );
 }
