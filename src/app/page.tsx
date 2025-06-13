@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { VaultCard } from "@/components/vault/VaultCard";
 import { vaults, Vault, Asset } from "@/components/vault/vaults";
+import { Card } from "@/components/ui/card";
 
 interface LogEntry {
   timestamp: string;
@@ -48,7 +49,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen p-6 md:p-10 space-y-6 font-sans">
+    <div className="min-h-screen p-6 md:p-10 space-y-8 font-sans">
       <h1 className="text-2xl font-semibold">Vault overview</h1>
       <div className="grid gap-4">
         {data.map((v) => (
@@ -64,12 +65,12 @@ export default function Dashboard() {
       </div>
 
       <div>
-        <h2 className="text-xl font-semibold mt-8 mb-2">Action log</h2>
-        <ul className="text-sm space-y-1">
+        <h2 className="text-xl font-semibold mt-8 mb-4">Action log</h2>
+        <ul className="text-sm space-y-2">
           {logs.map((log, idx) => (
-            <li key={idx} className="border rounded-md p-2">
+            <Card key={idx} className="p-3">
               <span className="font-medium">{log.vault}</span> - {log.action} - {log.hash} - {log.timestamp}
-            </li>
+            </Card>
           ))}
           {logs.length === 0 && <li className="text-gray-500">No actions yet.</li>}
         </ul>
