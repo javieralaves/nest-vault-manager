@@ -9,7 +9,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
-import { TableRow, TableCell } from "@/components/ui/table";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell,
+} from "@/components/ui/table";
 import { formatTimestamp } from "@/lib/utils";
 
 interface VaultRowProps {
@@ -101,22 +108,30 @@ export function VaultRow({
         <div className="text-sm">Last rebalance: {formatTimestamp(vault.lastRebalance)}</div>
 
         <div className="mt-2">
-          <table className="w-full text-sm border rounded-2xl overflow-hidden">
-            <thead>
-              <tr>
-                <th className="border-b p-1 text-left">Asset</th>
-                <th className="border-b p-1 text-left">Allocation %</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Asset</TableHead>
+                <TableHead>Allocation %</TableHead>
+                <TableHead>Amount</TableHead>
+                <TableHead>Token price</TableHead>
+                <TableHead>Total value</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {vault.composition.map((a, i) => (
-                <tr key={i}>
-                  <td className="border-b p-1">{a.symbol}</td>
-                  <td className="border-b p-1">{a.allocation}</td>
-                </tr>
+                <TableRow key={i}>
+                  <TableCell>{a.symbol}</TableCell>
+                  <TableCell>{a.allocation}</TableCell>
+                  <TableCell>{a.amount ?? "-"}</TableCell>
+                  <TableCell>{a.price ? `$${a.price}` : "-"}</TableCell>
+                  <TableCell>
+                    {a.amount && a.price ? `$${(a.amount * a.price).toLocaleString()}` : "-"}
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
           {vault.staked > 0 && <div className="text-sm mt-2">Pending USDC: {vault.staked}</div>}
         </div>
 

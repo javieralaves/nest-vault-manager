@@ -38,7 +38,7 @@ const VaultSheetContent = React.forwardRef<
       ref={ref}
       {...props}
       className={cn(
-        "fixed z-50 m-4 max-w-md rounded-xl bg-white shadow transition-all duration-300 focus:outline-none",
+        "fixed z-50 m-4 max-w-lg rounded-xl bg-white shadow transition-all duration-300 focus:outline-none",
         "data-[state=closed]:opacity-0 data-[state=closed]:pointer-events-none",
         side === "right" &&
           "top-0 bottom-0 right-0 w-full translate-x-full data-[state=open]:translate-x-0",
