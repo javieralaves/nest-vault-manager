@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { VaultRow } from "@/components/vault/VaultRow";
 import { vaults, Vault, Asset } from "@/components/vault/vaults";
+import { formatTimestamp } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import {
   Table,
@@ -87,7 +88,7 @@ export default function Dashboard() {
         <ul className="text-sm space-y-2">
           {logs.map((log, idx) => (
             <Card key={idx} className="p-3">
-              <span className="font-medium">{log.vault}</span> - {log.action} - {log.hash} - {log.timestamp}
+              <span className="font-medium">{log.vault}</span> - {log.action} - {log.hash} - {formatTimestamp(log.timestamp)}
             </Card>
           ))}
           {logs.length === 0 && <li className="text-gray-500">No actions yet.</li>}

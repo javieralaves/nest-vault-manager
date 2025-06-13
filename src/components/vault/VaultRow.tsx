@@ -4,6 +4,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/s
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TableRow, TableCell } from "@/components/ui/table";
+import { formatTimestamp } from "@/lib/utils";
 
 interface VaultRowProps {
   vault: Vault;
@@ -54,16 +55,16 @@ export function VaultRow({
           <TableCell className="font-medium">{vault.name}</TableCell>
           <TableCell>{vault.apy}%</TableCell>
           <TableCell>{vault.price}</TableCell>
-          <TableCell>{new Date(vault.lastPriceUpdate).toLocaleString()}</TableCell>
-          <TableCell>{new Date(vault.lastRebalance).toLocaleString()}</TableCell>
+          <TableCell>{formatTimestamp(vault.lastPriceUpdate)}</TableCell>
+          <TableCell>{formatTimestamp(vault.lastRebalance)}</TableCell>
         </TableRow>
       </SheetTrigger>
       <SheetContent className="flex flex-col gap-4 p-6" side="right">
         <div className="font-semibold text-lg mb-2">{vault.name}</div>
         <div className="text-sm">APY: {vault.apy}%</div>
         <div className="text-sm">Price: {vault.price}</div>
-        <div className="text-sm">Last price update: {new Date(vault.lastPriceUpdate).toLocaleString()}</div>
-        <div className="text-sm">Last rebalance: {new Date(vault.lastRebalance).toLocaleString()}</div>
+        <div className="text-sm">Last price update: {formatTimestamp(vault.lastPriceUpdate)}</div>
+        <div className="text-sm">Last rebalance: {formatTimestamp(vault.lastRebalance)}</div>
 
         <div className="mt-2">
           <table className="w-full text-sm border rounded-2xl overflow-hidden">
