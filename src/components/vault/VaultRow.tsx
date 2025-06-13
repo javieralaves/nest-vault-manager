@@ -3,6 +3,7 @@ import { Vault, Asset } from "./vaults";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
 import { TableRow, TableCell } from "@/components/ui/table";
 import { formatTimestamp } from "@/lib/utils";
 
@@ -30,6 +31,19 @@ export function VaultRow({
   const addRow = () => setCompRows((r) => [...r, { symbol: "", allocation: 0 }]);
   const updateRow = (i: number, field: keyof Asset, value: string) => {
     setCompRows((rows) => rows.map((r, idx) => (idx === i ? { ...r, [field]: value } : r)));
+  };
+  const updateAllocation = (i: number, value: number) => {
+    setCompRows((rows) => {
+      const otherSum = rows.reduce(
+        (sum, r, idx) => sum + (idx === i ? 0 : Number(r.allocation)),
+        0
+      );
+      const maxAllowed = 100 - otherSum;
+      const capped = Math.min(value, maxAllowed);
+      return rows.map((r, idx) =>
+        idx === i ? { ...r, allocation: capped } : r
+      );
+    });
   };
   const removeRow = (i: number) => setCompRows((rows) => rows.filter((_, idx) => idx !== i));
 
@@ -100,25 +114,32 @@ export function VaultRow({
 
         {editingComp ? (
           <div className="space-y-2">
-            {compRows.map((row, idx) => (
-              <div key={idx} className="flex gap-2 items-center">
-                <Input
-                  className="flex-1"
-                  placeholder="Asset"
-                  value={row.symbol}
-                  onChange={(e) => updateRow(idx, "symbol", e.target.value)}
-                />
-                <Input
-                  className="w-20"
-                  type="number"
-                  value={row.allocation}
-                  onChange={(e) => updateRow(idx, "allocation", e.target.value)}
-                />
-                <Button variant="outline" size="sm" onClick={() => removeRow(idx)}>
-                  Remove
-                </Button>
-              </div>
-            ))}
+            {compRows.map((row, idx) => {
+              const max = 100 - compRows.reduce((s, r, j) => s + (j === idx ? 0 : Number(r.allocation)), 0);
+              return (
+                <div key={idx} className="flex gap-2 items-center">
+                  <Input
+                    className="flex-1"
+                    placeholder="Asset"
+                    value={row.symbol}
+                    onChange={(e) => updateRow(idx, "symbol", e.target.value)}
+                  />
+                  <div className="flex items-center gap-2 w-40">
+                    <Slider
+                      value={[row.allocation]}
+                      max={max}
+                      min={0}
+                      step={1}
+                      onValueChange={(v) => updateAllocation(idx, v[0])}
+                    />
+                    <span className="w-8 text-right">{row.allocation}</span>
+                  </div>
+                  <Button variant="outline" size="sm" onClick={() => removeRow(idx)}>
+                    Remove
+                  </Button>
+                </div>
+              );
+            })}
             <Button variant="outline" size="sm" onClick={addRow}>
               Add asset
             </Button>
