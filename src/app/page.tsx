@@ -61,11 +61,11 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen p-6 md:p-10 space-y-8 font-sans">
-      <Card>
-        <CardHeader>
-          <CardTitle>Vault overview</CardTitle>
+      <Card className="border-gray-300">
+        <CardHeader className="p-0">
+          <CardTitle className="p-4">Vault overview</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           <Table>
             <TableHeader>
               <TableRow>
@@ -92,11 +92,11 @@ export default function Dashboard() {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Action log</CardTitle>
+      <Card className="border-gray-300">
+        <CardHeader className="p-0">
+          <CardTitle className="p-4">Action log</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           <Table>
             <TableHeader>
               <TableRow>
