@@ -3,21 +3,24 @@ import { useState } from "react";
 import { VaultRow } from "@/components/vault/VaultRow";
 import { vaults, Vault, Asset } from "@/components/vault/vaults";
 import { formatTimestamp } from "@/lib/utils";
-import { Card } from "@/components/ui/card";
 import {
   Table,
   TableHeader,
   TableBody,
   TableHead,
   TableRow,
+  TableCell,
 } from "@/components/ui/table";
 
 interface LogEntry {
   timestamp: string;
   vault: string;
   action: string;
-  hash: string;
+  address: string;
+  details: string;
 }
+
+const userAddress = "0x1234...abcd";
 
 export default function Dashboard() {
   const [data, setData] = useState<Vault[]>(vaults);
@@ -47,11 +50,10 @@ export default function Dashboard() {
     );
   };
 
-  function handleAction(action: string, vault: Vault) {
-    const hash = "0x" + Math.random().toString(16).slice(2, 10);
+  function handleAction(action: string, vault: Vault, details: string) {
     const timestamp = new Date().toISOString();
     setLogs((l) => [
-      { timestamp, vault: vault.name, action, hash },
+      { timestamp, vault: vault.name, action, address: userAddress, details },
       ...l,
     ]);
   }
@@ -85,14 +87,35 @@ export default function Dashboard() {
 
       <div>
         <h2 className="text-xl font-semibold mt-8 mb-4">Action log</h2>
-        <ul className="text-sm space-y-2">
-          {logs.map((log, idx) => (
-            <Card key={idx} className="p-3">
-              <span className="font-medium">{log.vault}</span> - {log.action} - {log.hash} - {formatTimestamp(log.timestamp)}
-            </Card>
-          ))}
-          {logs.length === 0 && <li className="text-gray-500">No actions yet.</li>}
-        </ul>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Date</TableHead>
+              <TableHead>Vault</TableHead>
+              <TableHead>Action</TableHead>
+              <TableHead>User</TableHead>
+              <TableHead>Changes</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {logs.map((log, idx) => (
+              <TableRow key={idx}>
+                <TableCell>{formatTimestamp(log.timestamp)}</TableCell>
+                <TableCell>{log.vault}</TableCell>
+                <TableCell>{log.action}</TableCell>
+                <TableCell>{log.address}</TableCell>
+                <TableCell>{log.details}</TableCell>
+              </TableRow>
+            ))}
+            {logs.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={5} className="text-gray-500">
+                  No actions yet.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );
