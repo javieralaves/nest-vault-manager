@@ -9,7 +9,7 @@ import { formatTimestamp } from "@/lib/utils";
 
 interface VaultRowProps {
   vault: Vault;
-  onAction: (action: string, vault: Vault) => void;
+  onAction: (action: string, vault: Vault, details: string) => void;
   onUpdatePrice: (id: string, price: number) => void;
   onRebalance: (id: string) => void;
   onUpdateComposition: (id: string, comp: Asset[]) => void;
@@ -47,18 +47,33 @@ export function VaultRow({
   };
   const removeRow = (i: number) => setCompRows((rows) => rows.filter((_, idx) => idx !== i));
 
+  const compToString = (c: Asset[]) =>
+    c.map((a) => `${a.symbol} ${a.allocation}%`).join(", ");
+
   const savePrice = () => {
-    onUpdatePrice(vault.id, parseFloat(priceValue));
-    onAction("update_price", vault);
+    const newPrice = parseFloat(priceValue);
+    onUpdatePrice(vault.id, newPrice);
+    onAction(
+      "update_price",
+      vault,
+      `Price: ${vault.price} -> ${newPrice}`
+    );
     setEditingPrice(false);
   };
 
   const saveComp = () => {
-    onUpdateComposition(
-      vault.id,
-      compRows.map((r) => ({ ...r, allocation: Number(r.allocation) }))
+    const newComp = compRows.map((r) => ({
+      ...r,
+      allocation: Number(r.allocation),
+    }));
+    onUpdateComposition(vault.id, newComp);
+    onAction(
+      "update_composition",
+      vault,
+      `Composition: ${compToString(vault.composition)} -> ${compToString(
+        newComp
+      )}`
     );
-    onAction("update_composition", vault);
     setEditingComp(false);
   };
 
@@ -163,7 +178,11 @@ export function VaultRow({
         <Button
           onClick={() => {
             onRebalance(vault.id);
-            onAction("rebalance", vault);
+            onAction(
+              "rebalance",
+              vault,
+              `Staked: ${vault.staked} -> 0`
+            );
           }}
         >
           Rebalance now
