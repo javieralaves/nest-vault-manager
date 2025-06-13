@@ -1,8 +1,15 @@
 "use client";
 import { useState } from "react";
-import { VaultCard } from "@/components/vault/VaultCard";
+import { VaultRow } from "@/components/vault/VaultRow";
 import { vaults, Vault, Asset } from "@/components/vault/vaults";
 import { Card } from "@/components/ui/card";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableHead,
+  TableRow,
+} from "@/components/ui/table";
 
 interface LogEntry {
   timestamp: string;
@@ -51,18 +58,29 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen p-6 md:p-10 space-y-8 font-sans">
       <h1 className="text-2xl font-semibold">Vault overview</h1>
-      <div className="grid gap-4">
-        {data.map((v) => (
-          <VaultCard
-            key={v.id}
-            vault={v}
-            onAction={handleAction}
-            onUpdatePrice={updatePrice}
-            onRebalance={rebalance}
-            onUpdateComposition={updateComposition}
-          />
-        ))}
-      </div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Vault</TableHead>
+            <TableHead>APY</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead>Last price update</TableHead>
+            <TableHead>Last rebalance</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.map((v) => (
+            <VaultRow
+              key={v.id}
+              vault={v}
+              onAction={handleAction}
+              onUpdatePrice={updatePrice}
+              onRebalance={rebalance}
+              onUpdateComposition={updateComposition}
+            />
+          ))}
+        </TableBody>
+      </Table>
 
       <div>
         <h2 className="text-xl font-semibold mt-8 mb-4">Action log</h2>
